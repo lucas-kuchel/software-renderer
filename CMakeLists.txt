@@ -7,5 +7,5 @@ file(GLOB_RECURSE SOURCES "source/*.cpp")
 add_executable(software-renderer ${SOURCES})
 
 target_include_directories(software-renderer PRIVATE
-    "include"
+    "source/include"
 )
