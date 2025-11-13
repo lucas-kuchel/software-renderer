@@ -1,13 +1,21 @@
 #include <swr/allocation.hpp>
+#include <swr/image.hpp>
 
 #include <cstring>
 #include <print>
 
 int main() {
     swr::Allocation allocation;
+    swr::ImageDescriptor image = {
+        .allocation = &allocation,
+        .format = swr::ImageFormat::R8G8B8A8_UNORM,
+        .extent = {800, 600},
+        .offset = {0, 0},
+    };
+
     swr::Result result = swr::Result::SUCCESS;
 
-    result = allocation.allocate(sizeof(float) * 4);
+    result = allocation.allocate(image.extent.width * image.extent.height * 4);
 
     if (result == swr::Result::ERROR_MEMORY_ALLOCATED) {
         std::println("Error: allocation failed: memory already allocated");
@@ -33,22 +41,7 @@ int main() {
         return 1;
     }
 
-    float values[4] = {
-        521.62,
-        234.75,
-        320.54,
-        923.23,
-    };
-
-    std::memcpy(returnInfo.value, values, sizeof(float) * 4);
-
-    for (std::size_t i = 0; i < allocation.size() / sizeof(float); i++) {
-        std::size_t byte = i * sizeof(float);
-
-        float value = *reinterpret_cast<float*>(returnInfo.value + byte);
-
-        std::println("value at byte {}: {}", byte, value);
-    }
+    std::memset(returnInfo.value, 255, allocation.size());
 
     result = allocation.free();
 
