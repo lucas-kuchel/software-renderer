@@ -6,11 +6,11 @@
 
 int main() {
     swr::Allocation allocation;
-    swr::ImageDescriptor image = {
+    swr::Image image = {
         .allocation = &allocation,
         .format = swr::ImageFormat::R8G8B8A8_UNORM,
         .extent = {800, 600},
-        .offset = {0, 0},
+        .offset = 0,
     };
 
     swr::Result result = swr::Result::SUCCESS;
